@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checklist</title>
+  <style>
+    body { font-family: -apple-system, Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    h1 { color: #333; }
+    form.add { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type=text] { flex: 1; padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 8px 16px; font-size: 14px; border: none; border-radius: 4px; cursor: pointer; }
+    .add button { background: #2563eb; color: white; }
+    .remove button { background: #ef4444; color: white; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
+    .empty { color: #888; font-style: italic; }
+  </style>
+</head>
+<body>
+  <h1>My Checklists</h1>
+
+  <form class="add" action="{{ url_for('add') }}" method="post">
+    <input type="text" name="name" placeholder="Add a new checklist..." required>
+    <button type="submit">Add</button>
+  </form>
+
+  {% if checklists %}
+    <ul>
+      {% for item in checklists %}
+        <li>
+          <span>{{ item.name }}</span>
+          <form class="remove" action="{{ url_for('remove', item_id=item.id) }}" method="post">
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="empty">No checklists yet. Add one above.</p>
+  {% endif %}
+</body>
+</html>
